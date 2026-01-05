@@ -13,13 +13,15 @@ export const createTask = async (req, res) => {
 // read aLL tasks
 export const readAllTask = async (req, res) => {
   try {
-    const page=parseInt(req.query.page)|| 1;
-    const limit=parseInt(req.query.limit)||6;
-    const skip=(page-1)*limit;
-    const tasks = await Task.find().sort({createdAt:-1}).skip(skip).limit(limit);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    const skip = (page - 1) * limit;
+
+    const tasks = await Task.find().sort({ createdAt: -1 }).skip(skip).limit(limit);
     const total = await Task.countDocuments();
-    const totalPages=Math.ceil(total/limit);
-    res.json({page,limit,total,tasks,totalPages})
+    const totalPages = Math.ceil(total / limit);
+
+    res.json({page, limit, total, totalPages, tasks});
   } catch (error) {
     res.status(500).json({ message: "Error in getting tasks" });
     
